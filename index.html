@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>晚自习签到系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .form-container {
+            padding: 25px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .upload-group {
+            margin: 20px 0;
+        }
+        
+        .upload-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .upload-group input {
+            width: 100%;
+            padding: 10px 0;
+        }
+        
+        .upload-note {
+            font-size: 0.9rem;
+            color: #e74c3c;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(90deg, #7f8c8d, #95a5a6);
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+        
+        /* 成功弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .roses {
+            font-size: 3rem;
+            margin: 15px 0;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .modal-message {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+        
+        .modal-btn {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .records-container {
+            display: none;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .record-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .record-item:last-child {
+            border-bottom: none;
+        }
+        
+        .record-info {
+            flex: 1;
+        }
+        
+        .record-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>晚自习签到系统</h1>
+            <p>请输入您的信息完成签到</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="alert info">
+                请确保信息准确无误，签到后不可修改
+            </div>
+            
+            <div class="input-group">
+                <label for="name">姓名</label>
+                <input type="text" id="name" placeholder="请输入您的姓名" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="studentId">学号</label>
+                <input type="text" id="studentId" placeholder="请输入您的学号" required>
+            </div>
+            
+            <div class="upload-group">
+                <label for="photo">上传自拍照片</label>
+                <input type="file" id="photo" accept="image/*" capture="environment">
+                <div class="upload-note">请拍照自己与时钟的自拍后，选择在相册上传</div>
+            </div>
+            
+            <button class="btn" id="signInBtn">签到</button>
+            <button class="btn btn-secondary" id="viewRecordsBtn">查看签到记录</button>
+            
+            <div class="alert success" id="successAlert">
+                签到成功！感谢您的参与。
+            </div>
+            
+            <div class="alert error" id="errorAlert">
+                签到失败，请重试或联系管理员。
+            </div>
+            
+            <div class="records-container" id="recordsContainer">
+                <h3>签到记录</h3>
+                <div id="recordsList"></div>
+                <button class="btn btn-secondary" id="clearAllBtn">清空所有记录</button>
+                <button class="btn" id="backBtn">返回签到</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 晚自习签到系统 | 技术支持</p>
+        </div>
+    </div>
+
+    <!-- 成功弹窗 -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="roses">🌹🌹🌹</div>
+            <div class="modal-message">签到成功喵，欢迎自习喵，谢谢使用喵</div>
+            <button class="modal-btn" id="closeModal">确定</button>
+        </div>
+    </div>
+
+    <!-- 引入 LeanCloud SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.13.2/dist/av-min.js"></script>
+    <script>
+        // 初始化 LeanCloud
+        var APP_ID = 'gSt5JvCJddyc0Gil0qHrtMia-gzGzoHsz';
+        var APP_KEY = 'JEDmkSemSAZ5hdQXMsqQ8ELP';
+        
+        AV.init({
+            appId: APP_ID,
+            appKey: APP_KEY,
+            serverURLs: 'https://gst5jvcj.lc-cn-n1-shared.com'
+        });
+
+        // 获取DOM元素
+        const signInBtn = document.getElementById('signInBtn');
+        const viewRecordsBtn = document.getElementById('viewRecordsBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const backBtn = document.getElementById('backBtn');
+        const closeModal = document.getElementById('closeModal');
+        const nameInput = document.getElementById('name');
+        const studentIdInput = document.getElementById('studentId');
+        const photoInput = document.getElementById('photo');
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+        const recordsContainer = document.getElementById('recordsContainer');
+        const recordsList = document.getElementById('recordsList');
+        const successModal = document.getElementById('successModal');
+        const formContainer = document.querySelector('.form-container');
+
+        // 签到按钮点击事件
+        signInBtn.addEventListener('click', async function() {
+            const name = nameInput.value.trim();
+            const studentId = studentIdInput.value.trim();
+            const photoFile = photoInput.files[0];
+
+            // 简单验证
+            if (!name || !studentId) {
+                showAlert(errorAlert, '姓名和学号不能为空！');
+                return;
+            }
+            
+            if (!photoFile) {
+                showAlert(errorAlert, '请上传自拍照片！');
+                return;
+            }
+
+            // 禁用按钮防止重复提交
+            signInBtn.disabled = true;
+            signInBtn.textContent = '签到中...';
+
+            try {
+                // 创建签到记录
+                const SignInRecord = AV.Object.extend('SignInRecord');
+                const record = new SignInRecord();
+                
+                // 上传图片到LeanCloud
+                const avFile = new AV.File(photoFile.name, photoFile);
+                await avFile.save();
+                
+                record.set('name', name);
+                record.set('studentId', studentId);
+                record.set('photo', avFile);
+                record.set('signInTime', new Date());
+
+                // 保存到LeanCloud
+                await record.save();
+                
+                // 显示成功弹窗
+                successModal.style.display = 'flex';
+                
+                // 清空表单
+                nameInput.value = '';
+                studentIdInput.value = '';
+                photoInput.value = '';
+            } catch (error) {
+                console.error('签到失败:', error);
+                showAlert(errorAlert, '签到失败，请重试或联系管理员。');
+            } finally {
+                // 恢复按钮状态
+                signInBtn.disabled = false;
+                signInBtn.textContent = '签到';
+            }
+        });
+
+        // 查看记录按钮点击事件
+        viewRecordsBtn.addEventListener('click', function() {
+            loadSignInRecords();
+            recordsContainer.style.display = 'block';
+            formContainer.style.display = 'none';
+        });
+
+        // 返回按钮点击事件
+        backBtn.addEventListener('click', function() {
+            recordsContainer.style.display = 'none';
+            formContainer.style.display = 'block';
+        });
+
+        // 清空记录按钮点击事件
+        clearAllBtn.addEventListener('click', async function() {
+            if (!confirm('确定要清空所有签到记录吗？此操作不可恢复。')) {
+                return;
+            }
+            
+            try {
+                const query = new AV.Query('SignInRecord');
+                const records = await query.find();
+                
+                await AV.Object.destroyAll(records);
+                loadSignInRecords();
+                alert('所有记录已清空！');
+            } catch (error) {
+                console.error('清空记录失败:', error);
+                alert('清空记录失败，请重试。');
+            }
+        });
+
+        // 关闭弹窗按钮点击事件
+        closeModal.addEventListener('click', function() {
+            successModal.style.display = 'none';
+        });
+
+        // 加载签到记录
+        async function loadSignInRecords() {
+            try {
+                const query = new AV.Query('SignInRecord');
+                query.descending('createdAt');
+                const records = await query.find();
+                
+                recordsList.innerHTML = '';
+                
+                if (records.length === 0) {
+                    recordsList.innerHTML = '<p>暂无签到记录</p>';
+                    return;
+                }
+                
+                records.forEach(record => {
+                    const recordItem = document.createElement('div');
+                    recordItem.className = 'record-item';
+                    
+                    const signInTime = record.get('signInTime');
+                    const formattedTime = signInTime ? new Date(signInTime).toLocaleString() : new Date(record.createdAt).toLocaleString();
+                    
+                    recordItem.innerHTML = `
+                        <div class="record-info">
+                            <strong>${record.get('name')}</strong> (${record.get('studentId')})
+                            <div>签到时间: ${formattedTime}</div>
+                        </div>
+                        <div class="record-actions">
+                            <button class="delete-btn" data-id="${record.id}">删除</button>
+                        </div>
+                    `;
+                    
+                    recordsList.appendChild(recordItem);
+                });
+                
+                // 添加删除按钮事件监听
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = this.getAttribute('data-id');
+                        if (confirm('确定要删除这条记录吗？')) {
+                            try {
+                                const record = AV.Object.createWithoutData('SignInRecord', id);
+                                await record.destroy();
+                                loadSignInRecords();
+                            } catch (error) {
+                                console.error('删除记录失败:', error);
+                                alert('删除记录失败，请重试。');
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('加载记录失败:', error);
+                recordsList.innerHTML = '<p>加载记录失败，请刷新重试</p>';
+            }
+        }
+
+        // 显示提示信息
+        function showAlert(alertElement, message) {
+            alertElement.textContent = message;
+            alertElement.style.display = 'block';
+            
+            // 隐藏其他提示
+            const allAlerts = document.querySelectorAll('.alert');
+            allAlerts.forEach(alert => {
+                if (alert !== alertElement) {
+                    alert.style.display = 'none';
+                }
+            });
+            
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
