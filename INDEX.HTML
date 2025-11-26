@@ -127,4 +127,144 @@
 
         // ==========================================
         // 2. LeanCloud 配置 (已填入您的 ID 和 Key)
-        // =====
+        // ==========================================
+        AV.init({
+            appId: "v6tDMHtbS0q1Faaf1cNMELaP-gzGzoHsz",
+            appKey: "VGsQLkmnTkqUYmOsMAdgeaKA",
+            // ⚠️ 重要：请按照下方说明获取您的 serverURL 并替换引号内的内容
+            serverURL: "https://v6tdmhtb.api.lncldglobal.com" 
+        });
+
+        // 初始化画布
+        function initCanvas() {
+            canvas = document.getElementById('signatureCanvas');
+            ctx = canvas.getContext('2d');
+            const containerWidth = document.querySelector('.signature-area').offsetWidth;
+            canvas.width = Math.min(600, containerWidth - 40);
+            canvas.height = 200;
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            hasSignature = true;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        function stopDrawing() { isDrawing = false; }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX, clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function showSignature() {
+            document.getElementById('textContent').style.display = 'none';
+            document.getElementById('readCompleteBtn').style.display = 'none';
+            document.getElementById('signatureSection').style.display = 'block';
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+            setTimeout(initCanvas, 100);
+        }
+
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
+        }
+
+        function completeSignature() {
+            if (!hasSignature) { alert('请先进行签字再继续！'); return; }
+            document.getElementById('signatureSection').style.display = 'none';
+            document.getElementById('submitSection').style.display = 'block';
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step2').classList.add('completed');
+            document.getElementById('step3').classList.add('active');
+        }
+
+        function finalSubmit() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            try {
+                const signatureBase64 = canvas.toDataURL('image/png');
+                const blob = dataURLToBlob(signatureBase64);
+                const signatureFile = new AV.File(`signature_${new Date().getTime()}.png`, blob);
+
+                signatureFile.save().then(uploadedFile => {
+                    const signatureUrl = uploadedFile.url();
+                    // 这里会自动创建一个名为 'HonestyCommitment' 的表
+                    const Commitment = AV.Object.extend('HonestyCommitment');
+                    const commitment = new Commitment();
+                    commitment.set('signatureUrl', signatureUrl);
+                    commitment.set('submitTime', new Date());
+                    commitment.set('status', '已确认');
+                    commitment.set('device', getDeviceType());
+                    return commitment.save();
+                }).then(success => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    alert('🎉 承诺提交成功！\n\n您已确认遵守守则，签名信息已保存。');
+                }).catch(error => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    // 常见错误处理提示
+                    if(error.message.includes("serverURL")) {
+                        alert("提交失败：请在代码中填写正确的 serverURL (API域名)");
+                    } else {
+                        alert(`提交失败：${error.message}`);
+                    }
+                    console.error('存储失败：', error);
+                });
+            } catch (error) {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert(`提交异常：${error.message}`);
+            }
+        }
+
+        function dataURLToBlob(dataURL) {
+            const arr = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while(n--) { u8arr[n] = bstr.charCodeAt(n); }
+            return new Blob([u8arr], { type: mime });
+        }
+
+        function getDeviceType() {
+            const userAgent = navigator.userAgent;
+            return (/mobile|android|iphone|ipad|ipod/i.test(userAgent)) ? '移动端' : 'PC端';
+        }
+
+        window.onload = function() {
+            window.addEventListener('resize', function() {
+                if (document.getElementById('signatureSection').style.display === 'block') { initCanvas(); }
+            });
+        };
+    </script>
+</body>
+</html>
