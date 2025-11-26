@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高等数学期中考试诚信守则确认系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background-color: #f5f5f5;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .content-section {
+            padding: 30px;
+        }
+
+        .text-content {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-size: 16px;
+        }
+
+        .text-content h3 {
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 22px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .text-content h4 {
+            color: #1a56db;
+            margin: 20px 0 15px 0;
+            font-size: 18px;
+            padding-left: 10px;
+            border-left: 4px solid #1a56db;
+        }
+
+        .text-content p {
+            margin-bottom: 15px;
+            color: #444;
+            text-indent: 2em;
+            line-height: 1.8;
+        }
+
+        .text-content strong {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .read-complete-btn {
+            display: block;
+            width: 240px;
+            margin: 30px auto 20px;
+            padding: 14px 24px;
+            background: #1a56db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .read-complete-btn:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .signature-section {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .signature-title {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 21px;
+        }
+
+        .signature-area {
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            margin: 20px auto;
+            background: #f8fafc;
+            width: 90%;
+            max-width: 650px;
+        }
+
+        #signatureCanvas {
+            display: block;
+            margin: 0 auto;
+            cursor: crosshair;
+            border-radius: 6px;
+        }
+
+        .signature-controls {
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            margin: 0 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .clear-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #dc2626;
+        }
+
+        .submit-section {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .confirmation-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #bbf7d0;
+            font-size: 17px;
+        }
+
+        .final-submit-btn {
+            background: #16a34a;
+            color: white;
+            padding: 16px 50px;
+            font-size: 19px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .final-submit-btn:hover {
+            background: #15803d;
+            transform: scale(1.05);
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+            padding: 0 20px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 0 25px;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .step.active .step-circle {
+            background: #1a56db;
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            background: #16a34a;
+            color: white;
+        }
+
+        .step span {
+            font-size: 16px;
+            color: #475569;
+        }
+
+        .step.active span {
+            color: #1a56db;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .text-content {
+                padding: 20px 15px;
+                max-height: 400px;
+            }
+            
+            .step {
+                margin: 0 10px;
+            }
+            
+            .step span {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>高等数学期中考试诚信守则确认系统</h1>
+            <p>请仔细阅读守则内容并完成签字确认</p>
+        </div>
+
+        <!-- 步骤指示器 -->
+        <div class="step-indicator">
+            <div class="step active" id="step1">
+                <div class="step-circle">1</div>
+                <span>阅读守则</span>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-circle">2</div>
+                <span>电子签字</span>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-circle">3</div>
+                <span>确认提交</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <!-- 文档阅读区域（已更换文案） -->
+            <div class="text-content" id="textContent">
+                <h3>华北电力大学控制与计算机工程学院高等数学期中考试诚信守则</h3>
+                
+                <p>亲爱的同学们：</p>
+                
+                <p>当秋意渐浓，银杏叶铺就校园的金黄，我们迎来了高等数学期中考试的检验时刻。这场考试不仅是对半学期知识积累的复盘，更是对科学精神与人格品质的双重淬炼。为营造风清气正的考试氛围，守护每一位同学的付出与尊严，学院特发布《高等数学期中考试诚信守则》，愿我们以笔为剑、以诚立身，共同书写无愧于心的答卷。</p>
+                
+                <h4>一、手机使用规范：工具为学，而非投机之器</h4>
+                <p>本次考试允许携带手机，但仅限查看电子试卷（如通过指定平台接收题目），严禁以下行为：</p>
+                <p><strong>禁用通讯功能</strong>：关闭微信、QQ、短信等社交软件，退出所有学习类APP（如拍照搜题、在线翻译、公式查询工具）；</p>
+                <p><strong>禁止拍摄传递</strong>：不得用手机拍摄试卷、草稿纸或答案，更不可通过拍照、录屏等方式向场外传递信息；</p>
+                <p><strong>杜绝辅助计算</strong>：禁止使用计算器类APP、数学解题软件（如Wolfram Alpha）或其他智能工具获取解题步骤；</p>
+                <p><strong>专注答题场景</strong>：手机需放置于桌面左上角（监考教师指定位置），全程保持屏幕朝下，非查看题目时不得触碰。</p>
+                <p>请牢记：手机是学习的延伸，而非投机的捷径。任何试图利用科技手段突破规则的行为，都是对学术底线的践踏。</p>
+                
+                <h4>二、诚信为本：以真才实学，赴青春之约</h4>
+                <p>高等数学作为控制与计算机学科的“基石”，其严谨性与逻辑性贯穿专业学习的始终。诚信考试，既是对知识的尊重，更是对未来的负责：</p>
+                <p><strong>拒绝侥幸心理</strong>：一道题的抄袭、一个公式的照搬，或许能暂时掩盖漏洞，却会让你在未来的专业挑战中失去底气；</p>
+                <p><strong>珍视集体荣誉</strong>：一人作弊，损害的是整个学院的学风；人人守诺，方能铸就“学在电院”的金字招牌；</p>
+                <p><strong>坚守人格底色</strong>：诚信是比分数更重要的“必修课”。今日考场上的坦荡，终将成为你未来科研攻关、职场竞争中最坚实的底色。</p>
+                
+                <h4>三、考场纪律：细节见品格，规则护公平</h4>
+                <p>除手机使用外，请严格遵守以下考场要求：</p>
+                <p>• 凭学生证/校园卡入场，按指定座位就座，不得擅自调换；</p>
+                <p>• 开考15分钟后不得入场，开考60分钟内不得交卷离场；</p>
+                <p>• 除必要文具（黑色签字笔、尺规、无存储功能的计算器）外，其他物品（如书籍、笔记、电子设备）一律放至指定区域；</p>
+                <p>• 遇试卷印刷不清等问题，举手示意监考教师，不得私自交流；</p>
+                <p>• 交卷后迅速离开考场，不得在走廊、教室附近逗留讨论。</p>
+                
+                <h4>四、违规必究：莫让一时糊涂，毁掉一生清誉</h4>
+                <p>学院将以“零容忍”态度严肃处理违规行为：</p>
+                <p>• 凡发现携带手机作弊、夹带小抄、替考等行为，一律按《华北电力大学学生违纪处分规定》给予记过及以上处分，取消该课程成绩并记入个人档案；</p>
+                <p>• 情节严重者（如组织作弊、传播试题），将移交学校相关部门处理，并依法追究责任；</p>
+                <p>• 监考教师将通过巡考、监控录像抽查等方式全程监督，确保考试公平公正。</p>
+                
+                <p>同学们，高等数学的魅力在于探索真理的逻辑之美，而诚信则是开启这扇大门的唯一钥匙。当你伏案疾书时，请记住：每一道认真推导的公式、每一次独立思考的突破，都是对自己最好的嘉奖。</p>
+                
+                <p>愿我们以笔为刃，劈开浮躁的迷雾；以诚为盾，守护学术的纯粹。祝全体同学在本次考试中展现真实水平，收获知识与品格的双重成长！</p>
+                
+                <p style="text-align: right; margin-top: 30px; color: #666;">华北电力大学控制与计算机工程学院<br>2025年11月27日</p>
+            </div>
+
+            <button class="read-complete-btn" id="readCompleteBtn" onclick="showSignature()">
+                我已阅读完毕，进入签字
+            </button>
+
+            <!-- 签字区域 -->
+            <div class="signature-section" id="signatureSection">
+                <h2 class="signature-title">请在下方区域签署您的姓名</h2>
+                <div class="signature-area">
+                    <canvas id="signatureCanvas" width="600" height="200"></canvas>
+                </div>
+                <div class="signature-controls">
+                    <button class="btn clear-btn" onclick="clearSignature()">清除签字</button>
+                    <button class="btn" style="background: #16a34a; color: white;" onclick="completeSignature()">完成签字</button>
+                </div>
+            </div>
+
+            <!-- 确认提交区域 -->
+            <div class="submit-section" id="submitSection">
+                <div class="confirmation-message">
+                    <h3>✅ 签字完成</h3>
+                    <p>您已成功阅读《高等数学期中考试诚信守则》并完成电子签字，请确认提交以完成承诺流程。</p>
+                </div>
+                <button class="btn final-submit-btn" onclick="finalSubmit()">确认提交承诺</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let canvas, ctx;
+        let isDrawing = false;
+        let hasSignature = false;
+
+        // 初始化画布
+        function initCanvas() {
+            canvas = document.getElementById('signatureCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // 响应式调整画布大小
+            const containerWidth = document.querySelector('.signature-area').offsetWidth;
+            canvas.width = Math.min(600, containerWidth - 40);
+            canvas.height = 200;
+            
+            // 设置画布样式
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 鼠标事件
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+
+            // 触摸事件（移动端支持）
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+        }
+
+        // 开始绘制
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+            hasSignature = true;
+        }
+
+        // 绘制
+        function draw(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+
+        // 停止绘制
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // 处理触摸事件
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        // 显示签字区域
+        function showSignature() {
+            document.getElementById('textContent').style.display = 'none';
+            document.getElementById('readCompleteBtn').style.display = 'none';
+            document.getElementById('signatureSection').style.display = 'block';
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+            
+            // 初始化画布
+            setTimeout(initCanvas, 100);
+        }
+
+        // 清除签字
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            hasSignature = false;
+        }
+
+        // 完成签字
+        function completeSignature() {
+            if (!hasSignature) {
+                alert('请先进行签字再继续！');
+                return;
+            }
+            
+            document.getElementById('signatureSection').style.display = 'none';
+            document.getElementById('submitSection').style.display = 'block';
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step2').classList.add('completed');
+            document.getElementById('step3').classList.add('active');
+        }
+
+        // 最终提交
+        function finalSubmit() {
+            alert('🎉 承诺提交成功！\n\n您已确认遵守《高等数学期中考试诚信守则》。\n预祝考试顺利，展现真实水平！');
+            
+            // 实际使用中可在此处添加提交到服务器的逻辑
+            console.log('诚信守则承诺已提交');
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            // 适配移动端画布大小
+            window.addEventListener('resize', function() {
+                if (document.getElementById('signatureSection').style.display === 'block') {
+                    initCanvas();
+                }
+            });
+        };
+    </script>
+</body>
+</html>
