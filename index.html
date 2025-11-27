@@ -64,7 +64,24 @@
 
     <!-- 签字区域 -->
     <div class="signature-section" id="signatureSection" style="display: none;">
-        <h2 class="signature-title">请在下方区域签署您的姓名</h2>
+        <h2 class="signature-title">请填写个人信息并签署您的姓名</h2>
+        
+        <!-- 新增个人信息输入区域 -->
+        <div class="student-info">
+            <div class="info-item">
+                <label for="studentName">姓名：</label>
+                <input type="text" id="studentName" placeholder="请输入您的姓名" required>
+            </div>
+            <div class="info-item">
+                <label for="studentId">学号：</label>
+                <input type="text" id="studentId" placeholder="请输入您的学号" required>
+            </div>
+            <div class="info-item">
+                <label for="studentClass">班级：</label>
+                <input type="text" id="studentClass" placeholder="请输入您的班级（如：计科2301）" required>
+            </div>
+        </div>
+        
         <div class="signature-area">
             <canvas id="signatureCanvas" width="600" height="200"></canvas>
         </div>
@@ -189,8 +206,26 @@
         hasSignature = false;
     }
 
-    // 完成签字
+    // 完成签字（新增输入框验证）
     function completeSignature() {
+        // 获取输入框值
+        const studentName = document.getElementById('studentName').value.trim();
+        const studentId = document.getElementById('studentId').value.trim();
+        const studentClass = document.getElementById('studentClass').value.trim();
+        
+        // 验证输入
+        if (!studentName) {
+            alert('请输入您的姓名！');
+            return;
+        }
+        if (!studentId) {
+            alert('请输入您的学号！');
+            return;
+        }
+        if (!studentClass) {
+            alert('请输入您的班级！');
+            return;
+        }
         if (!hasSignature) {
             alert('请先进行签字再继续！');
             return;
@@ -203,18 +238,23 @@
         document.getElementById('step3').classList.add('active');
     }
 
-    // 最终提交（核心：LeanCloud 存储逻辑）
+    // 最终提交（核心：LeanCloud 存储逻辑，新增个人信息存储）
     function finalSubmit() {
         // 显示加载提示
         document.getElementById('loadingOverlay').style.display = 'flex';
 
         try {
+            // 获取输入框值
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentClass = document.getElementById('studentClass').value.trim();
+            
             // 1. 将 Canvas 签名转为 Base64 图片
             const signatureBase64 = canvas.toDataURL('image/png'); // 转为 PNG 格式的 Base64
 
             // 2. 上传图片到 LeanCloud 文件存储
             const blob = dataURLToBlob(signatureBase64); // Base64 转 Blob
-            const signatureFile = new AV.File(`signature_${new Date().getTime()}.png`, blob);
+            const signatureFile = new AV.File(`signature_${studentId}_${new Date().getTime()}.png`, blob);
 
             // 3. 先上传图片，再存储信息到结构化数据
             signatureFile.save().then(uploadedFile => {
@@ -225,7 +265,10 @@
                 const Commitment = AV.Object.extend('HonestyCommitment'); // Class 名称：HonestyCommitment（需在 LeanCloud 提前创建）
                 const commitment = new Commitment();
 
-                // 5. 设置要存储的字段（可根据需要新增，如学号、姓名等）
+                // 5. 设置要存储的字段（新增姓名、学号、班级字段）
+                commitment.set('studentName', studentName); // 学生姓名
+                commitment.set('studentId', studentId);     // 学号
+                commitment.set('studentClass', studentClass); // 班级
                 commitment.set('signatureUrl', signatureUrl); // 签名图片 URL
                 commitment.set('submitTime', new Date()); // 提交时间（自动生成）
                 commitment.set('status', '已确认'); // 提交状态
@@ -236,7 +279,7 @@
             }).then(success => {
                 // 提交成功
                 document.getElementById('loadingOverlay').style.display = 'none';
-                alert('🎉 承诺提交成功！\n\n您已确认遵守《高等数学期中考试诚信守则》，签名信息已保存。\n预祝考试顺利，展现真实水平！');
+                alert(`🎉 承诺提交成功！\n\n姓名：${studentName}\n学号：${studentId}\n班级：${studentClass}\n\n您已确认遵守《高等数学期中考试诚信守则》，签名信息已保存。\n预祝考试顺利，展现真实水平！`);
                 // 可选：提交后跳转页面（如返回首页）
                 // window.location.href = 'https://你的GitHub Pages首页';
             }).catch(error => {
@@ -378,5 +421,34 @@
     .confirmation-message h3 {
         color: #16a34a;
         font-size: 20px;
+    }
+    /* 新增输入框样式 */
+    .student-info {
+        margin-bottom: 20px;
+    }
+    .info-item {
+        margin: 12px 0;
+        display: flex;
+        align-items: center;
+    }
+    .info-item label {
+        width: 80px;
+        font-size: 16px;
+        color: #333;
+    }
+    .info-item input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    .info-item input::placeholder {
+        color: #999;
+    }
+    .info-item input:focus {
+        outline: none;
+        border-color: #16a34a;
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
     }
 </style>
