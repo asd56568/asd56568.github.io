@@ -1,506 +1,387 @@
-<!-- 步骤指示器 -->
-<div class="step-indicator">
-    <div class="step active" id="step1">
-        <div class="step-circle">1</div>
-        <span>阅读守则</span>
-    </div>
-    <div class="step" id="step2">
-        <div class="step-circle">2</div>
-        <span>电子签字</span>
-    </div>
-    <div class="step" id="step3">
-        <div class="step-circle">3</div>
-        <span>确认提交</span>
-    </div>
-</div>
-
-<div class="content-section">
-    <!-- 文档阅读区域 -->
-    <div class="text-content" id="textContent">
-        <h3>关于印发《华北电力大学考试规范及考试违规处理办法（2022 年修订）》的通知</h3>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算2501班签到系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         
-        <p>校直各单位：</p>
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
         
-        <p>为进一步严肃考试纪律，规范考试管理，树立良好学风考风，依据《中华人民共和国教育法》《中华人民共和国高等教育法》和《普通高等学校学生管理规定》（教育部令第 41 号）等有关文件精神，结合我校实际，对《华北电力大学考试规范及考试违规处理办法（2017 年修订）》（华电校教〔2017〕34 号）进行了修订。修订后的《华北电力大学考试规范及考试违规处理办法》经学校 2022 年第 1 次校长办公会议审议通过，现予以印发，请遵照执行。</p>
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
         
-        <p style="text-align: right; margin-top: 20px; color: #666;">2022 年 4 月 8 日</p>
+        .header {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            text-align: center;
+            padding: 25px 20px;
+        }
         
-        <h3 style="margin-top: 40px;">华北电力大学考试规范及考试违规处理办法（2022 年修订）</h3>
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
         
-        <h4>第一章 总 则</h4>
-        <p><strong>第一条</strong> 考试是高等学校公正选拔和评价人才、检查教学和学习效果、保证教学质量的主要手段。为了进一步严肃考试纪律，规范考试管理，树立良好学风考风，根据上级有关文件精神，结合我校实际，制定本办法。</p>
-        <p><strong>第二条</strong> 本办法适用于学校组织举行的所有考试（含全国大学外语四、六级考试等）。</p>
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
         
-        <h4>第二章 监考教师职责</h4>
-        <p><strong>第三条</strong> 考试监考是学校正常教学活动之一，是教师教学工作重要组成部分，所有教师都应当承担监考任务。各院系负责监考任务的具体安排。</p>
-        <p><strong>第四条</strong> 监考教师认真负责做好监考工作，是维护考场秩序、严肃考试纪律、刹住作弊歪风的关键。监考教师在考前要加强对学生考试纪律的教育，使学生充分认识到作弊的危害性和严重性；在监考时，要认真履行职责，及时制止学生作弊行为。要严格监考，对于无视考场守则，违反考试纪律的学生，要严肃及时处理。</p>
-        <p><strong>第五条</strong> 严格考场纪律，除主监考外，每个考场另行安排一至两名副监考。</p>
-        <p><strong>第六条</strong> 监考教师一经排定，原则上不得更换。确因特殊情况不能监考的教师，至少提前一天说明情况，由派出单位负责调换，并报教学管理部门备案。监考教师无故不能如期到达考场者，须由其所在单位负责安排他人代替，事后查明未到原因，按学校有关规定处理。</p>
-        <p><strong>第七条</strong> 监考教师应当提前 20 分钟进入考场，做好考试前各项准备工作，包括熟悉考场、清点考卷、准备答题纸、了解考生人数、清擦黑板等。</p>
-        <p><strong>第八条</strong> 主监考教师负责提供考场清单，考场清单可从华北电力大学考务系统中打印或由教学秘书协助打印。监考教师要严格检查考生身份，确保考生证件与本人身份一致相符。根据学生名单，监考教师应当采取相应措施（如按考场清单随机指定考生座位、贴考生姓名等）安排好考场座位。在考场允许情况下，尽量让考生隔列就座，维持良好考场秩序。</p>
-        <p><strong>第九条</strong> 监考教师在考试开始前要向学生宣读考场纪律，并提醒考生课桌上及课桌内不得留放书籍、笔记本、纸张、电子、手机及通讯设备等物品，要统一将上述物品放在指定地点，尤其是手机及通讯设备不允许带入考场，如已带入者，应当放到监考教师指定位置。同时要求考生检查桌面上是否写有与考试科目有关的内容，考生如发现相关内容，要主动请监考教师调换座位或者擦除。开卷考试开考前，监考教师要向考生明确可以带入考场的物品和材料。</p>
-        <p><strong>第十条</strong> 监考教师在分发考卷前，要准确清点考生人数，准时下发考卷。</p>
-        <p><strong>第十一条</strong> 监考教师不得在考场内聊天、抽烟、看书报、玩手机、做考题等其它与监考无关的事情；不得中途随意离开考场；更不能允许与考试无关人员进入考场。</p>
-        <p><strong>第十二条</strong> 监考教师不得解释题意，更不准做任何提示。</p>
-        <p><strong>第十三条</strong> 监考教师要严格按照学校规定时间进行考试，不得随意改变考试时间。若确有特殊情况需改变考试时间时，应由主监考教师提前请示院系同意后报相关教学管理部门批准，并及时通知有关人员和考场，以使考试时间一致。</p>
-        <p><strong>第十四条</strong> 监考教师在监考过程中，应当认真履行职责，维护好考场秩序，严禁考生出现违规行为。如发现考场秩序混乱，有违规情况而不及时制止，出现大面积考试作弊的；或考试后有人举报考场纪律混乱，秩序失控，出现多人考试作弊现象的，经调查属实，按学校有关教学事故认定的处理办法处理并给予相应处分。</p>
-        <p><strong>第十五条</strong> 考试结束时，应要求考生立即停止答卷，及时收回试卷，并检查试卷份数是否与考生数相符。</p>
-        <p><strong>第十六条</strong> 监考教师应当认真填写《考场情况记录表》，考试结束后将其交课程所在院系或相应教学管理部门。出现问题的考场，监考教师在考试结束后应及时将考生试卷、作弊材料及《考场情况记录表》交相关教学管理部门处理。</p>
-        <p><strong>第十七条</strong> 对于采取口试、论文等其它方式考核的课程，各院系要加强对考试过程的管理，严禁学生以其它形式作弊。</p>
-        <p><strong>第十八条</strong> 采取线上考试的，监考教师要根据考试条件、考试方式等情况，遵循公平公正原则，因地制宜地做好监考工作，同时参照一般考试要求履行好监考职责。</p>
+        .form-container {
+            padding: 25px;
+        }
         
-        <h4>第三章 学生考场守则</h4>
-        <p><strong>第十九条</strong> 学生应当自觉遵守考场守则，诚实守信，增强遵纪守法自觉性，严禁出现各类违规行为。</p>
-        <p><strong>第二十条</strong> 考生应按考试规定时间提前 10－20 分钟进入考场。考生应当服从监考教师指挥，按监考教师安排座位就座，做好考前各项准备工作。考试开始后迟到 15 分钟者，取消考试资格，视作旷考。</p>
-        <p><strong>第二十一条</strong> 考生凭学校规定证件（如校园卡、学生证、身份证）参加考试，并将证件放在桌子指定位置，以便检查。无证件者不得参加考试。</p>
-        <p><strong>第二十二条</strong> 考生不准在课桌内、课桌上写与考试科目有关的内容。在考试开始前，如发现有关内容，要主动请监考教师调换座位或者擦除。否则，一律按作弊处理。</p>
-        <p><strong>第二十三条</strong> 考试时，除必要文具和监考教师同意带进考场的物品外，其它未经监考教师允许带入考场的书籍、讲义、笔记、电子、手机及通讯设备等物品，应当按监考教师指定位置放置。</p>
-        <p><strong>第二十四条</strong> 考试开始 30 分钟以后，准予交卷出场。考生交卷后应马上离开考场，不得在考场内逗留或在考场附近大声喧哗。</p>
-        <p><strong>第二十五条</strong> 考生在考场内不准从事与考试无关活动，不准互相谈话，不得传递任何物品。如试题字迹不清时，可举手示意，询问教师。</p>
-        <p><strong>第二十六条</strong> 考生在考试过程中不允许旁窥、交头接耳、互打暗号或者手势。</p>
-        <p><strong>第二十七条</strong> 考生严禁自带纸张。考生的试题、答题纸、答题卡、草稿纸等由监考教师统一发放，考试结束后统一收回。无论何种情况，严禁将上述物品带出考场。</p>
-        <p><strong>第二十八条</strong> 考生严禁私自将装订成册的试卷、答题纸拆开。</p>
-        <p><strong>第二十九条</strong> 考生不准中途离开考场。如确实由于特殊原因，需要离开考场者，必须有监考教师陪同。对于无正当理由擅自离开考场者，按考试违纪处理。</p>
-        <p><strong>第三十条</strong> 考生若要提前交卷，应举手示意，在监考教师收卷后方可离开考场。考试结束，监考教师宣布收卷时，考生应立即停止答卷，在座位上等待监考教师收卷，教师清点考卷无误后，考生方可离开考场。</p>
+        .input-group {
+            margin-bottom: 20px;
+        }
         
-        <h4>第四章 考试违规及处理办法</h4>
-        <p><strong>第三十一条</strong> 学生考试违规分为考试违纪、考试作弊、考试严重作弊三种。</p>
-        <p><strong>第三十二条</strong> 学生有下列情况之一，属考试违纪：</p>
-        <p>（一）未按照监考教师指定座位就座；</p>
-        <p>（二）未按监考教师指定位置放置携带物品；</p>
-        <p>（三）私自将装订成册的试卷、答题纸拆开；</p>
-        <p>（四）考试过程中旁窥、交头接耳、互打暗号手势；</p>
-        <p>（五）不按时交卷或交卷后又返回试图更改试卷；</p>
-        <p>（六）未经监考教师同意，在考试过程中擅自离开考场；</p>
-        <p>（七）在考场或禁止范围内，喧哗、吸烟或者实施其他影响考场秩序的行为；</p>
-        <p>（八）将试题、答题纸、答题卡、草稿纸等不允许带出考场的考试用纸带出考场或者故意销毁试题、答题纸、答题卡等考试材料的；</p>
-        <p>（九）用规定以外的笔或者纸答题，或者在试卷规定以外的地方书写姓名、考号，或者以其他方式在答卷上标记信息；</p>
-        <p>（十）其它违反考场守则但尚未构成考试作弊的行为。</p>
-        <p><strong>第三十三条</strong> 学生有下列情况之一，属考试作弊：</p>
-        <p>（一）携带未经允许、与考试科目内容相关材料参加考试；</p>
-        <p>（二）偷看、抄袭与考试有关的资料或他人试卷；</p>
-        <p>（三）抢夺、窃取他人试卷、答题纸或者胁迫他人为自己抄袭提供方便；他人强拿自己试卷、答题纸而不及时阻止、不报告监考教师；</p>
-        <p>（四）携带电子通讯设备进入考位，且带有考试相关内容；</p>
-        <p>（五）在以大作业、论文、专题报告、综述等作为考核方式时，抄袭、下载、剽窃他人相关文章；</p>
-        <p>（六）在教师阅卷或其它情况下，发现答案雷同或试卷与参加考试人数不符等其它情况，经调查核实确属作弊的；</p>
-        <p>（七）协助考生作弊的；</p>
-        <p>（八）其他以不正当手段获得或者试图获得试题答案、考试成绩。</p>
-        <p><strong>第三十四条</strong> 学生有下列情况之一，属考试严重作弊：</p>
-        <p>（一）第二次作弊；</p>
-        <p>（二）由他人代替考试或替他人参加考试；</p>
-        <p>（三）组织作弊（有计划、有组织作弊）；</p>
-        <p>（四）使用通讯设备作弊行为严重；</p>
-        <p>（五）其它考试作弊性质严重行为。</p>
-        <p><strong>第三十五条</strong> 违规行为认定</p>
-        <p>监考教师发现考生有考试违纪、考试作弊、考试严重作弊等违规情况，应终止考生考试，没收其考卷及作弊证据。监考教师填写《考场情况记录表》，如实记录考试违规情况。《考场情况记录表》中记载考生违规记录作为认定考生违规事实依据，应当由两名以上（含两名）监考教师或者考场巡视员、督考员签字确认。监考教师应当向违规考生告知违规记录内容，违规考生应当签字认可，并离开考场；学生拒绝签字的，记录考生拒绝签字及拒绝签字时间，由两名监考教师共同签字认定违规情况。对于考生用于作弊的通讯设备等工具，予以暂扣并记录。考试结束后，监考教师应当及时将有关材料交相关教学管理部门认定。相关教学管理部门在接到考生作弊材料后，会同监考教师及相关院系复核违规事实和相关证据，在此基础上进行认定并及时通报，同时报相关学生管理部门。由学生管理部门告知被处理考生处理意见，根据相关规定给予违规学生相应纪律处分，具体见《华北电力大学学生违纪处理规定》。</p>
-        <p><strong>第三十六条</strong> 处理办法</p>
-        <p>（一）凡出现考试违纪情况考生，该课程成绩无效,以“0”分计，并给予记过处分。</p>
-        <p>（二）凡出现考试作弊情况考生，该课程成绩无效，以“0”分计，且注明“作弊”字样，并给予学生留校察看处分。</p>
-        <p>（三）凡出现考试严重作弊情况考生，该课程成绩无效，以“0”分计，且注明“作弊”字样，并给予学生开除学籍处分。</p>
-        <p><strong>第三十七条</strong> 对于在考试后，经调查核实，确属考试违规考生，一经查出，仍按上述相应情况处理。</p>
-        <p><strong>第三十八条</strong> 学生如对考试违规处理结果有异议，可以按程序进行申诉或听证，具体按照《华北电力大学学生校内申诉管理规定》《华北电力大学学生校内听证制度》办理。</p>
-        <p><strong>第三十九条</strong> 考试作弊学生需必修《新时代大学生道德建设与法治教育》并取得相应学分。</p>
-        <p><strong>第四十条</strong> 监考教师违反考场规范按学校有关规定严肃处理。</p>
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
         
-        <h4>第五章 附 则</h4>
-        <p><strong>第四十一条</strong> 本办法自发布之日起施行，原《华北电力大学考试规范及考试违规处理办法（2017 年修订）》（华电校教〔2017〕34 号）同时废止。其他有关文件规定与本办法不一致的，以本办法为准。</p>
-        <p><strong>第四十二条</strong> 本办法由教务处负责解释。</p>
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
         
-        <p style="text-align: right; margin-top: 30px; color: #666;">华北电力大学党政办公室 2022 年 4 月 8 日印发</p>
-    </div>
-
-    <button class="read-complete-btn" id="readCompleteBtn" onclick="showSignature()">
-        我已阅读完毕，进入签字
-    </button>
-
-    <!-- 签字区域 -->
-    <div class="signature-section" id="signatureSection" style="display: none;">
-        <h2 class="signature-title">请填写个人信息并签署您的姓名</h2>
+        .input-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
         
-        <!-- 新增个人信息输入区域 -->
-        <div class="student-info">
-            <div class="info-item">
-                <label for="studentName">姓名：</label>
-                <input type="text" id="studentName" placeholder="请输入您的姓名" required>
+        .upload-group {
+            margin: 20px 0;
+        }
+        
+        .upload-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .upload-group input {
+            width: 100%;
+            padding: 10px 0;
+        }
+        
+        .upload-note {
+            font-size: 0.9rem;
+            color: #e74c3c;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+        
+        /* 成功弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .roses {
+            font-size: 3rem;
+            margin: 15px 0;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .modal-message {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+        
+        .modal-btn {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>计算2501班签到系统</h1>
+            <p>请输入您的信息完成签到</p>
+            <p>2025/9/24 莫明龙个人提供</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="alert info">
+                请确保信息准确无误，签到后不可修改
             </div>
-            <div class="info-item">
-                <label for="studentId">学号：</label>
+            
+            <div class="input-group">
+                <label for="name">姓名</label>
+                <input type="text" id="name" placeholder="请输入您的姓名" required>
+            </div>
+            
+            <div class="input-group">
+                <label for="studentId">学号</label>
                 <input type="text" id="studentId" placeholder="请输入您的学号" required>
             </div>
-            <div class="info-item">
-                <label for="studentClass">班级：</label>
-                <input type="text" id="studentClass" placeholder="请输入您的班级（如：计科2301）" required>
+            
+            <div class="upload-group">
+                <label for="photo">上传自拍照片</label>
+                <input type="file" id="photo" accept="image/*" capture="environment">
+                <div class="upload-note">请拍照自己与时钟的自拍后，选择在相册上传</div>
+            </div>
+            
+            <button class="btn" id="signInBtn">签到</button>
+            
+            <div class="alert success" id="successAlert">
+                签到成功！感谢您的参与。
+            </div>
+            
+            <div class="alert error" id="errorAlert">
+                签到失败，请重试或联系管理员。
             </div>
         </div>
         
-        <div class="signature-area">
-            <canvas id="signatureCanvas" width="600" height="200"></canvas>
-        </div>
-        <div class="signature-controls">
-            <button class="btn clear-btn" onclick="clearSignature()">清除签字</button>
-            <button class="btn" style="background: #16a34a; color: white;" onclick="completeSignature()">完成签字</button>
+        <div class="footer">
+            <p>© 2023 计算2501班签到系统 | 莫明龙提供</p>
         </div>
     </div>
 
-    <!-- 确认提交区域 -->
-    <div class="submit-section" id="submitSection" style="display: none;">
-        <div class="confirmation-message">
-            <h3>✅ 签字完成</h3>
-            <p>您已成功阅读《华北电力大学考试规范及考试违规处理办法（2022 年修订）》并完成电子签字，请确认提交以完成承诺流程。</p>
+    <!-- 成功弹窗 -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="roses">🌹🌹🌹🌹🌹🌹</div>
+            <div class="modal-message">签到成功喵，欢迎自习喵，谢谢使用喵</div>
+            <button class="modal-btn" id="closeModal">确定</button>
         </div>
-        <button class="btn final-submit-btn" onclick="finalSubmit()">确认提交承诺</button>
     </div>
-</div>
 
-<!-- 上传中加载提示 -->
-<div class="loading-overlay" id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); justify-content: center; align-items: center; font-size: 18px; color: #333; z-index: 9999;">
-    <div>提交中... 请稍候</div>
-</div>
-
-<!-- 1. 引入 LeanCloud JS SDK（必须放在最前面） -->
-<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.15.1/dist/av-min.js"></script>
-
-<script>
-    let canvas, ctx;
-    let isDrawing = false;
-    let hasSignature = false;
-
-    // 2. 初始化 LeanCloud 中国版（已填入你的配置，直接使用）
-    AV.init({
-        appId: "v6tDMHtbS0q1Faaf1cNMELaP-gzGzoHsz",  // 你的 App ID
-        appKey: "VGsQLkmnTkqUYmOsMAdgeaKA",          // 你的 App Key
-        serverURL: "https://v6tDMHtb.lc-cn-n1-shared.com"  // 中国版专属 serverURL（自动匹配你的 App ID）
-    });
-
-    // 初始化画布
-    function initCanvas() {
-        canvas = document.getElementById('signatureCanvas');
-        ctx = canvas.getContext('2d');
+    <!-- 引入 LeanCloud SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.13.2/dist/av-min.js"></script>
+    <script>
+        // 初始化 LeanCloud
+        var APP_ID = 'gSt5JvCJddyc0Gil0qHrtMia-gzGzoHsz';
+        var APP_KEY = 'JEDmkSemSAZ5hdQXMsqQ8ELP';
         
-        // 响应式调整画布大小
-        const containerWidth = document.querySelector('.signature-area').offsetWidth;
-        canvas.width = Math.min(600, containerWidth - 40);
-        canvas.height = 200;
-        
-        // 设置画布样式
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // 鼠标事件
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-
-        // 触摸事件（移动端支持）
-        canvas.addEventListener('touchstart', handleTouch);
-        canvas.addEventListener('touchmove', handleTouch);
-        canvas.addEventListener('touchend', stopDrawing);
-    }
-
-    // 开始绘制
-    function startDrawing(e) {
-        isDrawing = true;
-        const rect = canvas.getBoundingClientRect();
-        ctx.beginPath();
-        ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
-        hasSignature = true;
-    }
-
-    // 绘制
-    function draw(e) {
-        if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-        ctx.stroke();
-    }
-
-    // 停止绘制
-    function stopDrawing() {
-        isDrawing = false;
-    }
-
-    // 处理触摸事件
-    function handleTouch(e) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
-                                        e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
-            clientX: touch.clientX,
-            clientY: touch.clientY
+        AV.init({
+            appId: APP_ID,
+            appKey: APP_KEY,
+            serverURLs: 'https://gst5jvcj.lc-cn-n1-shared.com'
         });
-        canvas.dispatchEvent(mouseEvent);
-    }
 
-    // 显示签字区域
-    function showSignature() {
-        document.getElementById('textContent').style.display = 'none';
-        document.getElementById('readCompleteBtn').style.display = 'none';
-        document.getElementById('signatureSection').style.display = 'block';
-        document.getElementById('step1').classList.remove('active');
-        document.getElementById('step1').classList.add('completed');
-        document.getElementById('step2').classList.add('active');
-        
-        // 初始化画布
-        setTimeout(initCanvas, 100);
-    }
+        // 获取DOM元素
+        const signInBtn = document.getElementById('signInBtn');
+        const closeModal = document.getElementById('closeModal');
+        const nameInput = document.getElementById('name');
+        const studentIdInput = document.getElementById('studentId');
+        const photoInput = document.getElementById('photo');
+        const successAlert = document.getElementById('successAlert');
+        const errorAlert = document.getElementById('errorAlert');
+        const successModal = document.getElementById('successModal');
 
-    // 清除签字
-    function clearSignature() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        hasSignature = false;
-    }
+        // 签到按钮点击事件
+        signInBtn.addEventListener('click', async function() {
+            const name = nameInput.value.trim();
+            const studentId = studentIdInput.value.trim();
+            const photoFile = photoInput.files[0];
 
-    // 完成签字（新增输入框验证）
-    function completeSignature() {
-        // 获取输入框值
-        const studentName = document.getElementById('studentName').value.trim();
-        const studentId = document.getElementById('studentId').value.trim();
-        const studentClass = document.getElementById('studentClass').value.trim();
-        
-        // 验证输入
-        if (!studentName) {
-            alert('请输入您的姓名！');
-            return;
-        }
-        if (!studentId) {
-            alert('请输入您的学号！');
-            return;
-        }
-        if (!studentClass) {
-            alert('请输入您的班级！');
-            return;
-        }
-        if (!hasSignature) {
-            alert('请先进行签字再继续！');
-            return;
-        }
-        
-        document.getElementById('signatureSection').style.display = 'none';
-        document.getElementById('submitSection').style.display = 'block';
-        document.getElementById('step2').classList.remove('active');
-        document.getElementById('step2').classList.add('completed');
-        document.getElementById('step3').classList.add('active');
-    }
-
-    // 最终提交（核心：LeanCloud 存储逻辑，新增个人信息存储）
-    function finalSubmit() {
-        // 显示加载提示
-        document.getElementById('loadingOverlay').style.display = 'flex';
-
-        try {
-            // 获取输入框值
-            const studentName = document.getElementById('studentName').value.trim();
-            const studentId = document.getElementById('studentId').value.trim();
-            const studentClass = document.getElementById('studentClass').value.trim();
+            // 简单验证
+            if (!name || !studentId) {
+                showAlert(errorAlert, '姓名和学号不能为空！');
+                return;
+            }
             
-            // 1. 将 Canvas 签名转为 Base64 图片
-            const signatureBase64 = canvas.toDataURL('image/png'); // 转为 PNG 格式的 Base64
+            if (!photoFile) {
+                showAlert(errorAlert, '请上传自拍照片！');
+                return;
+            }
 
-            // 2. 上传图片到 LeanCloud 文件存储
-            const blob = dataURLToBlob(signatureBase64); // Base64 转 Blob
-            const signatureFile = new AV.File(`signature_${studentId}_${new Date().getTime()}.png`, blob);
+            // 禁用按钮防止重复提交
+            signInBtn.disabled = true;
+            signInBtn.textContent = '签到中...';
 
-            // 3. 先上传图片，再存储信息到结构化数据
-            signatureFile.save().then(uploadedFile => {
-                // 图片上传成功，获取图片 URL
-                const signatureUrl = uploadedFile.url();
+            try {
+                // 创建签到记录
+                const SignInRecord = AV.Object.extend('SignInRecord');
+                const record = new SignInRecord();
+                
+                // 上传图片到LeanCloud
+                const avFile = new AV.File(photoFile.name, photoFile);
+                await avFile.save();
+                
+                record.set('name', name);
+                record.set('studentId', studentId);
+                record.set('photo', avFile);
+                record.set('signInTime', new Date());
 
-                // 4. 创建结构化数据对象（存储到 LeanCloud 的 Class 中）
-                const Commitment = AV.Object.extend('HonestyCommitment'); // Class 名称：HonestyCommitment（需在 LeanCloud 提前创建）
-                const commitment = new Commitment();
-
-                // 5. 设置要存储的字段（新增姓名、学号、班级字段）
-                commitment.set('studentName', studentName); // 学生姓名
-                commitment.set('studentId', studentId);     // 学号
-                commitment.set('studentClass', studentClass); // 班级
-                commitment.set('signatureUrl', signatureUrl); // 签名图片 URL
-                commitment.set('submitTime', new Date()); // 提交时间（自动生成）
-                commitment.set('status', '已确认'); // 提交状态
-                commitment.set('device', getDeviceType()); // 提交设备（PC/移动端）
-                commitment.set('documentName', '华北电力大学考试规范及考试违规处理办法（2022年修订）'); // 新增文档名称字段，便于区分存储内容
-
-                // 6. 保存数据到 LeanCloud
-                return commitment.save();
-            }).then(success => {
-                // 提交成功
-                document.getElementById('loadingOverlay').style.display = 'none';
-                alert(`🎉 承诺提交成功！\n\n姓名：${studentName}\n学号：${studentId}\n班级：${studentClass}\n\n您已确认遵守《华北电力大学考试规范及考试违规处理办法（2022 年修订）》，签名信息已保存。\n感谢您的配合！`);
-                // 可选：提交后跳转页面（如返回首页）
-                // window.location.href = 'https://你的GitHub Pages首页';
-            }).catch(error => {
-                // 提交失败
-                document.getElementById('loadingOverlay').style.display = 'none';
-                alert(`提交失败：${error.message}\n\n请检查网络连接或 LeanCloud 配置是否正确`);
-                console.error('存储失败：', error);
-            });
-        } catch (error) {
-            document.getElementById('loadingOverlay').style.display = 'none';
-            alert(`提交异常：${error.message}`);
-        }
-    }
-
-    // 辅助函数：Base64 转 Blob（用于上传图片）
-    function dataURLToBlob(dataURL) {
-        const arr = dataURL.split(',');
-        const mime = arr[0].match(/:(.*?);/)[1];
-        const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new Blob([u8arr], { type: mime });
-    }
-
-    // 辅助函数：获取设备类型（PC/移动端）
-    function getDeviceType() {
-        const userAgent = navigator.userAgent;
-        if (/mobile|android|iphone|ipad|ipod/i.test(userAgent)) {
-            return '移动端';
-        } else {
-            return 'PC端';
-        }
-    }
-
-    // 页面加载完成后初始化
-    window.onload = function() {
-        // 初始化步骤指示器样式（补充默认样式，避免显示异常）
-        document.querySelectorAll('.step').forEach(step => {
-            step.style.display = 'inline-block';
-            step.style.margin = '0 20px';
-            step.style.textAlign = 'center';
-        });
-        document.querySelectorAll('.step-circle').forEach(circle => {
-            circle.style.width = '30px';
-            circle.style.height = '30px';
-            circle.style.borderRadius = '50%';
-            circle.style.backgroundColor = '#eee';
-            circle.style.display = 'flex';
-            circle.style.alignItems = 'center';
-            circle.style.justifyContent = 'center';
-            circle.style.margin = '0 auto 5px';
-        });
-        document.querySelector('.step.active .step-circle').style.backgroundColor = '#16a34a';
-        document.querySelector('.step.active .step-circle').style.color = 'white';
-        
-        // 适配移动端画布大小
-        window.addEventListener('resize', function() {
-            if (document.getElementById('signatureSection').style.display === 'block') {
-                initCanvas();
+                // 保存到LeanCloud
+                await record.save();
+                
+                // 显示成功弹窗
+                successModal.style.display = 'flex';
+                
+                // 清空表单
+                nameInput.value = '';
+                studentIdInput.value = '';
+                photoInput.value = '';
+            } catch (error) {
+                console.error('签到失败:', error);
+                showAlert(errorAlert, '签到失败，请重试或联系管理员。');
+            } finally {
+                // 恢复按钮状态
+                signInBtn.disabled = false;
+                signInBtn.textContent = '签到';
             }
         });
-    };
-</script>
 
-<!-- 补充必要的样式，确保页面正常显示 -->
-<style>
-    .step-indicator {
-        text-align: center;
-        margin: 30px 0;
-    }
-    .step.completed .step-circle {
-        background-color: #666 !important;
-        color: white !important;
-    }
-    .text-content {
-        max-width: 800px;
-        margin: 0 auto;
-        line-height: 1.8;
-        padding: 0 20px;
-    }
-    .read-complete-btn {
-        display: block;
-        margin: 30px auto;
-        padding: 12px 30px;
-        background: #16a34a;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    .read-complete-btn:hover {
-        background: #15803d;
-    }
-    .signature-section, .submit-section {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    .signature-area {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        margin: 20px 0;
-    }
-    #signatureCanvas {
-        width: 100%;
-        border: 1px dashed #ccc;
-    }
-    .signature-controls {
-        text-align: center;
-        margin-top: 20px;
-    }
-    .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin: 0 10px;
-        font-size: 14px;
-    }
-    .clear-btn {
-        background: #f3f4f6;
-        color: #333;
-    }
-    .final-submit-btn {
-        background: #16a34a;
-        color: white;
-        padding: 12px 40px;
-        font-size: 16px;
-        margin-top: 20px;
-    }
-    .confirmation-message {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    .confirmation-message h3 {
-        color: #16a34a;
-        font-size: 20px;
-    }
-    /* 新增输入框样式 */
-    .student-info {
-        margin-bottom: 20px;
-    }
-    .info-item {
-        margin: 12px 0;
-        display: flex;
-        align-items: center;
-    }
-    .info-item label {
-        width: 80px;
-        font-size: 16px;
-        color: #333;
-    }
-    .info-item input {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-    .info-item input::placeholder {
-        color: #999;
-    }
-    .info-item input:focus {
-        outline: none;
-        border-color: #16a34a;
-        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
-    }
-</style>
+        // 关闭弹窗按钮点击事件
+        closeModal.addEventListener('click', function() {
+            successModal.style.display = 'none';
+        });
+
+        // 显示提示信息
+        function showAlert(alertElement, message) {
+            alertElement.textContent = message;
+            alertElement.style.display = 'block';
+            
+            // 隐藏其他提示
+            const allAlerts = document.querySelectorAll('.alert');
+            allAlerts.forEach(alert => {
+                if (alert !== alertElement) {
+                    alert.style.display = 'none';
+                }
+            });
+            
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
