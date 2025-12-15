@@ -3,385 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>计算2501班签到系统</title>
+    <title>诚信考试承诺书签署</title>
+    <!-- 引入 LeanCloud JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.15.1/dist/av-min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #333; background-color: #f9fafb; margin: 0; padding: 20px; }
         
-        body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+        /* 步骤指示器样式 */
+        .step-indicator { text-align: center; margin: 30px 0; }
+        .step { display: inline-block; margin: 0 20px; text-align: center; opacity: 0.5; }
+        .step.active { opacity: 1; font-weight: bold; }
+        .step.active .step-circle { background-color: #16a34a; color: white; }
+        .step.completed .step-circle { background-color: #666 !important; color: white !important; }
+        .step-circle { width: 30px; height: 30px; border-radius: 50%; background-color: #eee; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; }
+
+        /* 内容区域样式 */
+        .content-section { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 800px; margin: 0 auto; }
+        .text-content { line-height: 1.8; font-size: 16px; }
+        .text-content h2 { text-align: center; margin-bottom: 30px; color: #000; font-size: 24px; font-weight: bold; }
+        .text-content p { margin-bottom: 15px; text-align: justify; }
+        .indent-text { text-indent: 2em; }
         
-        .container {
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 500px;
-            overflow: hidden;
-        }
+        /* 按钮与表单样式 */
+        .read-complete-btn { display: block; margin: 30px auto 0; padding: 12px 30px; background: #16a34a; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        .read-complete-btn:hover { background: #15803d; }
         
-        .header {
-            background: linear-gradient(90deg, #3498db, #2980b9);
-            color: white;
-            text-align: center;
-            padding: 25px 20px;
-        }
+        .signature-section, .submit-section { max-width: 600px; margin: 0 auto; padding-top: 20px; }
+        .signature-title { text-align: center; margin-bottom: 20px; }
         
-        .header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
+        .student-info { margin-bottom: 20px; }
+        .info-item { margin: 15px 0; display: flex; align-items: center; }
+        .info-item label { width: 60px; font-weight: bold; }
+        .info-item input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        .info-item input:focus { outline: none; border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1); }
+
+        .signature-area { border: 2px dashed #ddd; border-radius: 4px; margin: 20px 0; background: #fafafa; }
+        #signatureCanvas { width: 100%; display: block; }
         
-        .header p {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-top: 8px;
-        }
+        .signature-controls { text-align: center; margin-top: 20px; }
+        .btn { padding: 10px 25px; border: none; border-radius: 4px; cursor: pointer; margin: 0 10px; font-size: 14px; }
+        .clear-btn { background: #f3f4f6; color: #333; border: 1px solid #ddd; }
+        .final-submit-btn { background: #16a34a; color: white; padding: 12px 40px; font-size: 16px; margin-top: 20px; width: 100%; }
         
-        .form-container {
-            padding: 25px;
-        }
+        .confirmation-message { text-align: center; margin-bottom: 30px; }
+        .confirmation-message h3 { color: #16a34a; font-size: 22px; margin-bottom: 15px; }
         
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .input-group input:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        
-        .upload-group {
-            margin: 20px 0;
-        }
-        
-        .upload-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .upload-group input {
-            width: 100%;
-            padding: 10px 0;
-        }
-        
-        .upload-note {
-            font-size: 0.9rem;
-            color: #e74c3c;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        
-        .btn {
-            background: linear-gradient(90deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 15px;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 10px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-        
-        .alert {
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 8px;
-            text-align: center;
-            display: none;
-        }
-        
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .info {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-            display: block;
-        }
-        
-        /* 成功弹窗样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal-content {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-        }
-        
-        .roses {
-            font-size: 3rem;
-            margin: 15px 0;
-            animation: float 3s infinite ease-in-out;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .modal-message {
-            font-size: 1.2rem;
-            margin: 15px 0;
-            color: #2c3e50;
-            line-height: 1.5;
-        }
-        
-        .modal-btn {
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 15px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            border-top: 1px solid #eee;
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                border-radius: 10px;
-            }
-            
-            .header {
-                padding: 20px 15px;
-            }
-            
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .form-container {
-                padding: 20px;
-            }
+        .loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
+        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #16a34a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .content-section { padding: 20px; }
+            .info-item { flex-direction: column; align-items: flex-start; }
+            .info-item label { margin-bottom: 5px; }
+            .info-item input { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>计算2501班签到系统</h1>
-            <p>请输入您的信息完成签到</p>
-            <p>2025/9/24 莫明龙个人提供</p>
+
+<!-- 步骤指示器 -->
+<div class="step-indicator">
+    <div class="step active" id="step1">
+        <div class="step-circle">1</div>
+        <span>阅读承诺书</span>
+    </div>
+    <div class="step" id="step2">
+        <div class="step-circle">2</div>
+        <span>电子签字</span>
+    </div>
+    <div class="step" id="step3">
+        <div class="step-circle">3</div>
+        <span>确认提交</span>
+    </div>
+</div>
+
+<div class="content-section">
+    <!-- 文档阅读区域 (已修改为新内容) -->
+    <div class="text-content" id="textContent">
+        <h2>诚信考试承诺书</h2>
+        
+        <p class="indent-text">同学们，为了加强考风考纪教育，提高同学们的诚信意识和诚信素质，努力培养和造就诚信人才，本着“树道德之新风，立诚信之根 本”的宗旨，在考试中做出如下承诺：</p>
+        
+        <p>一、学生应当自觉遵守考场守则，诚实守信，增强遵纪守法自觉性，严禁出现各类违规行为。</p>
+        <p>二、携带规定的物品进入考场并放在指定位置，在规定的座位参加考试。</p>
+        <p>三、考生不得在课桌内、课桌上写与考试科目有关的内容。在考试开始前，如发现有关内容，要主动请监考教师调换座位或者擦除。</p>
+        <p>四、考试时，除必要文具和监考教师同意带进考场的物品外，其它未经监考教师允许带入考场的书籍、讲义、笔记、电子、手机及通讯设备等物品。</p>
+        <p>五、考生在考试过程中不允许旁窥、不得传递任何物品、交头接耳、互打暗号或者手势；如试题字迹不清时，可举手示意，询问教师。</p>
+        <p>六、考生严禁自带纸张。考生的试题、答题纸、答题卡、草稿纸等由监考教师统一发放，考试结束后统一收回。无论何种情况，严禁将上述物品带出考场。</p>
+        <p>七、不抄袭或者协助他人抄袭试题答案或与考试内容相关的资料。</p>
+        <p>八、不由他人冒名代替参加考试。</p>
+        <p>九、珍惜宝贵时间，认真复习迎考。与其考试时手忙脚乱，懊悔不已，不如保持平和而积极的心态，认真复习，积极备考，做好充分的准备。</p>
+        <p>十、提高思想认识，端正学习与考试的态度。考试作弊不仅是对个人能力的否定和蔑视，更是对学术风气的亵渎，作弊者丢掉的不仅仅是学位，更是宝贵的诚信品质。</p>
+        
+        <p class="indent-text" style="margin-top: 20px;">本人签此诚信考试承诺书，并严格遵守考试的相关规定。如有违反，自觉按照相关规定接受相应的惩罚。</p>
+        <p class="indent-text">良好的学风、文明的校风需要我们共同维护，让我们以诚信的态度对待每一场考试，考出真实的水平，坚守真实的自我。</p>
+        
+        <div style="text-align: right; margin-top: 40px; margin-bottom: 20px; font-weight: bold; line-height: 1.6;">
+            控制与计算机工程学院<br>
+            2025.11.26
         </div>
         
-        <div class="form-container">
-            <div class="alert info">
-                请确保信息准确无误，签到后不可修改
+        <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <p>学生阅读后签名：________________（请点击下方按钮进行电子签名）</p>
+        </div>
+    </div>
+
+    <button class="read-complete-btn" id="readCompleteBtn" onclick="showSignature()">
+        我已阅读完毕，进入签字
+    </button>
+
+    <!-- 签字区域 -->
+    <div class="signature-section" id="signatureSection" style="display: none;">
+        <h2 class="signature-title">请填写个人信息并签署您的姓名</h2>
+        
+        <div class="student-info">
+            <div class="info-item">
+                <label for="studentName">姓名：</label>
+                <input type="text" id="studentName" placeholder="请输入您的姓名" required>
             </div>
-            
-            <div class="input-group">
-                <label for="name">姓名</label>
-                <input type="text" id="name" placeholder="请输入您的姓名" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="studentId">学号</label>
+            <div class="info-item">
+                <label for="studentId">学号：</label>
                 <input type="text" id="studentId" placeholder="请输入您的学号" required>
             </div>
-            
-            <div class="upload-group">
-                <label for="photo">上传自拍照片</label>
-                <input type="file" id="photo" accept="image/*" capture="environment">
-                <div class="upload-note">请拍照自己与时钟的自拍后，选择在相册上传</div>
-            </div>
-            
-            <button class="btn" id="signInBtn">签到</button>
-            
-            <div class="alert success" id="successAlert">
-                签到成功！感谢您的参与。
-            </div>
-            
-            <div class="alert error" id="errorAlert">
-                签到失败，请重试或联系管理员。
+            <div class="info-item">
+                <label for="studentClass">班级：</label>
+                <input type="text" id="studentClass" placeholder="请输入您的班级（如：计科2301）" required>
             </div>
         </div>
         
-        <div class="footer">
-            <p>© 2023 计算2501班签到系统 | 莫明龙提供</p>
+        <div class="signature-area">
+            <canvas id="signatureCanvas" width="600" height="200"></canvas>
+        </div>
+        <div class="signature-controls">
+            <button class="btn clear-btn" onclick="clearSignature()">清除签字</button>
+            <button class="btn" style="background: #16a34a; color: white;" onclick="completeSignature()">完成签字</button>
         </div>
     </div>
 
-    <!-- 成功弹窗 -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <div class="roses">🌹🌹🌹🌹🌹🌹</div>
-            <div class="modal-message">签到成功喵，欢迎自习喵，谢谢使用喵</div>
-            <button class="modal-btn" id="closeModal">确定</button>
+    <!-- 确认提交区域 -->
+    <div class="submit-section" id="submitSection" style="display: none;">
+        <div class="confirmation-message">
+            <h3>✅ 签字完成</h3>
+            <p>您已成功阅读《诚信考试承诺书》并完成电子签字，请确认提交以完成承诺流程。</p>
         </div>
+        <button class="btn final-submit-btn" onclick="finalSubmit()">确认提交承诺</button>
     </div>
+</div>
 
-    <!-- 引入 LeanCloud SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.13.2/dist/av-min.js"></script>
-    <script>
-        // 初始化 LeanCloud
-        var APP_ID = 'gSt5JvCJddyc0Gil0qHrtMia-gzGzoHsz';
-        var APP_KEY = 'JEDmkSemSAZ5hdQXMsqQ8ELP';
+<!-- 上传中加载提示 -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div style="font-size: 16px; color: #555;">正在提交承诺书，请稍候...</div>
+</div>
+
+<script>
+    let canvas, ctx;
+    let isDrawing = false;
+    let hasSignature = false;
+
+    // 初始化 LeanCloud
+    AV.init({
+        appId: "v6tDMHtbS0q1Faaf1cNMELaP-gzGzoHsz",
+        appKey: "VGsQLkmnTkqUYmOsMAdgeaKA",
+        serverURL: "https://v6tdmhtb.lc-cn-n1-shared.com"
+    });
+
+    // 初始化画布
+    function initCanvas() {
+        canvas = document.getElementById('signatureCanvas');
+        ctx = canvas.getContext('2d');
         
-        AV.init({
-            appId: APP_ID,
-            appKey: APP_KEY,
-            serverURLs: 'https://gst5jvcj.lc-cn-n1-shared.com'
-        });
+        const containerWidth = document.querySelector('.signature-area').offsetWidth;
+        canvas.width = Math.min(600, containerWidth - 4); // 减去边框
+        canvas.height = 200;
+        
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.fillStyle = '#fff'; // 确保背景是白色，防止导出透明图片
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 获取DOM元素
-        const signInBtn = document.getElementById('signInBtn');
-        const closeModal = document.getElementById('closeModal');
-        const nameInput = document.getElementById('name');
-        const studentIdInput = document.getElementById('studentId');
-        const photoInput = document.getElementById('photo');
-        const successAlert = document.getElementById('successAlert');
-        const errorAlert = document.getElementById('errorAlert');
-        const successModal = document.getElementById('successModal');
+        // 绑定事件
+        const events = [
+            ['mousedown', startDrawing],
+            ['mousemove', draw],
+            ['mouseup', stopDrawing],
+            ['mouseout', stopDrawing],
+            ['touchstart', handleTouch],
+            ['touchmove', handleTouch],
+            ['touchend', stopDrawing]
+        ];
+        
+        events.forEach(([type, handler]) => canvas.addEventListener(type, handler, { passive: false }));
+    }
 
-        // 签到按钮点击事件
-        signInBtn.addEventListener('click', async function() {
-            const name = nameInput.value.trim();
-            const studentId = studentIdInput.value.trim();
-            const photoFile = photoInput.files[0];
+    function startDrawing(e) {
+        isDrawing = true;
+        const pos = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+        hasSignature = true;
+    }
 
-            // 简单验证
-            if (!name || !studentId) {
-                showAlert(errorAlert, '姓名和学号不能为空！');
-                return;
-            }
+    function draw(e) {
+        if (!isDrawing) return;
+        e.preventDefault();
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    }
+
+    function stopDrawing() {
+        isDrawing = false;
+    }
+
+    function handleTouch(e) {
+        if (e.type === 'touchstart') startDrawing(e);
+        else if (e.type === 'touchmove') draw(e);
+    }
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    }
+
+    // 流程控制函数
+    function showSignature() {
+        document.getElementById('textContent').style.display = 'none';
+        document.getElementById('readCompleteBtn').style.display = 'none';
+        document.getElementById('signatureSection').style.display = 'block';
+        updateSteps(2);
+        setTimeout(initCanvas, 100);
+    }
+
+    function clearSignature() {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        hasSignature = false;
+    }
+
+    function completeSignature() {
+        const name = document.getElementById('studentName').value.trim();
+        const id = document.getElementById('studentId').value.trim();
+        const cls = document.getElementById('studentClass').value.trim();
+        
+        if (!name || !id || !cls) return alert('请完整填写姓名、学号和班级！');
+        if (!hasSignature) return alert('请先在方框内签名！');
+        
+        document.getElementById('signatureSection').style.display = 'none';
+        document.getElementById('submitSection').style.display = 'block';
+        updateSteps(3);
+    }
+
+    function finalSubmit() {
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        
+        const name = document.getElementById('studentName').value.trim();
+        const id = document.getElementById('studentId').value.trim();
+        const cls = document.getElementById('studentClass').value.trim();
+        const signatureBase64 = canvas.toDataURL('image/png');
+        
+        const file = new AV.File(`sign_${id}_${Date.now()}.png`, dataURLToBlob(signatureBase64));
+        
+        file.save().then(savedFile => {
+            const Commitment = AV.Object.extend('HonestyCommitment');
+            const record = new Commitment();
             
-            if (!photoFile) {
-                showAlert(errorAlert, '请上传自拍照片！');
-                return;
-            }
-
-            // 禁用按钮防止重复提交
-            signInBtn.disabled = true;
-            signInBtn.textContent = '签到中...';
-
-            try {
-                // 创建签到记录
-                const SignInRecord = AV.Object.extend('SignInRecord');
-                const record = new SignInRecord();
-                
-                // 上传图片到LeanCloud
-                const avFile = new AV.File(photoFile.name, photoFile);
-                await avFile.save();
-                
-                record.set('name', name);
-                record.set('studentId', studentId);
-                record.set('photo', avFile);
-                record.set('signInTime', new Date());
-
-                // 保存到LeanCloud
-                await record.save();
-                
-                // 显示成功弹窗
-                successModal.style.display = 'flex';
-                
-                // 清空表单
-                nameInput.value = '';
-                studentIdInput.value = '';
-                photoInput.value = '';
-            } catch (error) {
-                console.error('签到失败:', error);
-                showAlert(errorAlert, '签到失败，请重试或联系管理员。');
-            } finally {
-                // 恢复按钮状态
-                signInBtn.disabled = false;
-                signInBtn.textContent = '签到';
-            }
-        });
-
-        // 关闭弹窗按钮点击事件
-        closeModal.addEventListener('click', function() {
-            successModal.style.display = 'none';
-        });
-
-        // 显示提示信息
-        function showAlert(alertElement, message) {
-            alertElement.textContent = message;
-            alertElement.style.display = 'block';
+            record.set('studentName', name);
+            record.set('studentId', id);
+            record.set('studentClass', cls);
+            record.set('signatureUrl', savedFile.url());
+            record.set('submitTime', new Date());
+            record.set('status', '已确认');
+            record.set('device', /mobile|android|iphone/i.test(navigator.userAgent) ? '移动端' : 'PC端');
+            // 更新此处文档名称以匹配新内容
+            record.set('documentName', '诚信考试承诺书'); 
             
-            // 隐藏其他提示
-            const allAlerts = document.querySelectorAll('.alert');
-            allAlerts.forEach(alert => {
-                if (alert !== alertElement) {
-                    alert.style.display = 'none';
-                }
-            });
-            
-            // 5秒后自动隐藏
-            setTimeout(() => {
-                alertElement.style.display = 'none';
-            }, 5000);
+            return record.save();
+        }).then(() => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            alert(`🎉 提交成功！\n\n${name} 同学，您已成功签署《诚信考试承诺书》。\n祝您考试顺利，取得优异成绩！`);
+            // 可以在此处添加跳转或重置逻辑
+        }).catch(error => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            console.error(error);
+            alert('提交失败，请重试或联系管理员。\n错误信息：' + error.message);
+        });
+    }
+
+    // 工具函数
+    function dataURLToBlob(dataURL) {
+        const arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1], bstr = atob(arr[1]);
+        let n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--) u8arr[n] = bstr.charCodeAt(n);
+        return new Blob([u8arr], {type:mime});
+    }
+
+    function updateSteps(stepNum) {
+        for(let i=1; i<=3; i++) {
+            const el = document.getElementById('step'+i);
+            el.classList.remove('active', 'completed');
+            if(i < stepNum) el.classList.add('completed');
+            if(i === stepNum) el.classList.add('active');
         }
-    </script>
+    }
+
+    // 窗口大小改变时重置画布尺寸（简单处理）
+    window.addEventListener('resize', () => {
+        if(document.getElementById('signatureSection').style.display === 'block') {
+            initCanvas();
+        }
+    });
+</script>
+
 </body>
 </html>
